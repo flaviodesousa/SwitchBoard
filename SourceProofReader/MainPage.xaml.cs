@@ -42,7 +42,7 @@ namespace SourceProofReader
                 checksum &= 0xff;
             }
 
-            var c1 = (char) (65 + (checksum >> 4));
+            var c1 = (char) (65 + Math.Round(checksum / 16.0));
             var c2 = (char) (65 + (checksum & 0xf));
             return $"{c1}{c2}";
         }
