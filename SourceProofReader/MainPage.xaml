@@ -9,16 +9,18 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBox x:Name="Filename" Margin="10,10,131,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" AcceptsReturn="True" IsReadOnly="True" PlaceholderText="Select a file to proofread..." Height="32"/>
-        <Button Margin="1154,10,97,0" VerticalAlignment="Top" Click="FilePicker_Click" Height="32" Width="32" Content="..." HorizontalAlignment="Right"/>
+        <TextBox x:Name="Filename" Margin="10,10,134,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" AcceptsReturn="True" IsReadOnly="True" PlaceholderText="Select a file to proofread..." Height="32"/>
+        <Button Margin="0,10,97,0" VerticalAlignment="Top" Click="FilePicker_Click" Height="32" Width="32" Content="..." HorizontalAlignment="Right"/>
         <Button x:Name="ProofreadFile" Content="Proofread" Margin="0,10,10,0" VerticalAlignment="Top" Click="ProofreadFile_Click" IsEnabled="False" Height="32" Width="82" HorizontalAlignment="Right"/>
-        <ListView x:Name="ProofreadSourceCodeListView" Margin="10,47,10,10" FontFamily="Consolas" FontSize="12">
+        <ListView x:Name="ProofreadSourceCodeListView" Margin="10,47,10,10" 
+                  HorizontalContentAlignment="Stretch"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:ProofreadSourceInfo">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <TextBlock Text="{x:Bind Checksum}" Width="24" Margin="10,0,5,0"/>
-                        <TextBlock Text="{x:Bind LineNumber}" HorizontalTextAlignment="Right" Width="48" Margin="5,0,5,0"/>
-                        <TextBox Text="{x:Bind Line}" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind Checksum}" Width="24" FontFamily="Consolas" FontSize="12" Margin="5,0,5,0"/>
+                        <TextBlock Text="{x:Bind LineNumber}" HorizontalTextAlignment="Right" Width="48" Margin="5,0,5,0" FontFamily="Consolas" FontSize="12"/>
+                        <TextBox Text="{x:Bind Line}" TextWrapping="Wrap" Margin="5,0,5,0" FontFamily="Consolas" FontSize="12"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
