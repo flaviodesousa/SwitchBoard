@@ -9,15 +9,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="39*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <TextBox x:Name="filename" Margin="155,19,94,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" AcceptsReturn="True" IsReadOnly="True" PlaceholderText="Select a file to proofread"/>
-        <TextBlock HorizontalAlignment="Left" Margin="29,26,0,0" Text="File to proofread:" TextWrapping="Wrap" VerticalAlignment="Top" Width="121"/>
-        <Button x:Name="ProofreadFile" Content="Proofread" Margin="155,56,0,0" VerticalAlignment="Top" Click="ProofreadFile_Click" IsEnabled="False"/>
-        <TextBlock x:Name="proofread" Margin="29,94,0,39" Text="" TextWrapping="Wrap" FontFamily="Consolas" FontSize="16" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
-        <Button x:Name="filePicker" Margin="0,19,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Click="filePicker_Click" Height="32" Content="Select..." Width="79" RenderTransformOrigin="0.848,0.531"/>
-
+        <TextBox x:Name="Filename" Margin="10,10,131,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" AcceptsReturn="True" IsReadOnly="True" PlaceholderText="Select a file to proofread..." Height="32"/>
+        <Button Margin="1154,10,97,0" VerticalAlignment="Top" Click="FilePicker_Click" Height="32" Width="32" Content="..." HorizontalAlignment="Right"/>
+        <Button x:Name="ProofreadFile" Content="Proofread" Margin="0,10,10,0" VerticalAlignment="Top" Click="ProofreadFile_Click" IsEnabled="False" Height="32" Width="82" HorizontalAlignment="Right"/>
+        <ListView x:Name="ProofreadSourceCodeListView" Margin="10,47,10,10" FontFamily="Consolas" FontSize="12">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:ProofreadSourceInfo">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <TextBlock Text="{x:Bind Checksum}" Width="24" Margin="10,0,5,0"/>
+                        <TextBlock Text="{x:Bind LineNumber}" HorizontalTextAlignment="Right" Width="48" Margin="5,0,5,0"/>
+                        <TextBox Text="{x:Bind Line}" TextWrapping="Wrap" Margin="5,0,5,0" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>

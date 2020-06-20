@@ -1,66 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace SourceProofReader
 {
+    public class ProofreadSourceInfo
+    {
+        public ProofreadSourceInfo(string checksum, string line)
+        {
+            Checksum = checksum;
+            _sourceLine = line;
+        }
+
+        private readonly string _sourceLine;
+        public string Checksum { get; }
+        public ushort LineNumber => ushort.Parse(_sourceLine.Substring(0, _sourceLine.IndexOf(' ')));
+        public string Line => _sourceLine.Substring(_sourceLine.IndexOf(' ') + 1);
+    }
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage
     {
-        private Windows.Storage.StorageFile fileToProofread;
+        private Windows.Storage.StorageFile _fileToProofread;
+        public ObservableCollection<ProofreadSourceInfo> ProofreadSourceCodeDataSource = new ObservableCollection<ProofreadSourceInfo>();
         public MainPage()
         {
             this.InitializeComponent();
+            this.ProofreadSourceCodeListView.ItemsSource = ProofreadSourceCodeDataSource;
         }
 
-        private string checksum(string text)
+        private static string Checksum(string text)
         {
-            int checksum = 0;
+            var checksum = 0;
             var chars = text.ToCharArray();
 
-            for (int i = 0; i < chars.Length; ++i)
+            for (var i = 0; i < chars.Length; ++i)
             {
                 checksum += (chars[i] * (i + 1));
                 checksum &= 0xff;
             }
 
-            var c1 = (char) (65 + (checksum / 16.0));
+            var c1 = (char) (65 + (checksum >> 4));
             var c2 = (char) (65 + (checksum & 0xf));
-            return string.Empty + c1 + c2 + " " + text + '\n';
+            return $"{c1}{c2}";
         }
 
         private async void ProofreadFile_Click(object sender, RoutedEventArgs e)
         {
-            if (fileToProofread == null) return;
-            proofread.Text = string.Empty;
-            var fileStream = await fileToProofread.OpenStreamForReadAsync();
+            if (_fileToProofread == null) return;
+            ProofreadSourceCodeDataSource.Clear();
+            var fileStream = await _fileToProofread.OpenStreamForReadAsync();
             using (var reader = new StreamReader(fileStream))
             {
                 while (!reader.EndOfStream)
                 {
-                    string line = reader.ReadLine();
-                    proofread.Text += checksum(line);
+                    var line = reader.ReadLine();
+                    ProofreadSourceCodeDataSource.Add(new ProofreadSourceInfo(Checksum(line), line));
                 }
             }
         }
 
-        private async void filePicker_Click(object sender, RoutedEventArgs e)
+        private async void FilePicker_Click(object sender, RoutedEventArgs e)
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker
             {
@@ -73,8 +75,8 @@ namespace SourceProofReader
 
             if (file != null)
             {
-                filename.Text = file.Path;
-                fileToProofread = file;
+                Filename.Text = file.Path;
+                _fileToProofread = file;
                 ProofreadFile.IsEnabled = true;
                 Windows.Storage.AccessCache.StorageApplicationPermissions
                     .FutureAccessList.Add(file);
