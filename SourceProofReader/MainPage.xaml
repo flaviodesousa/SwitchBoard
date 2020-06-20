@@ -17,11 +17,19 @@
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="local:ProofreadSourceInfo">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Checksum}" Width="24" FontFamily="Consolas" FontSize="12" Margin="5,0,5,0"/>
-                        <TextBlock Text="{x:Bind LineNumber}" HorizontalTextAlignment="Right" Width="48" Margin="5,0,5,0" FontFamily="Consolas" FontSize="12"/>
-                        <TextBox Text="{x:Bind Line}" TextWrapping="Wrap" Margin="5,0,5,0" FontFamily="Consolas" FontSize="12"/>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind Checksum}" Width="24" FontFamily="Consolas" FontSize="12"/>
+                        <TextBlock Grid.Column="1" Text="{x:Bind LineNumber}" HorizontalTextAlignment="Right" Width="48" Padding="5,0,10,0" FontFamily="Consolas" FontSize="12"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind Line}" TextWrapping="Wrap" FontFamily="Consolas" FontSize="12"/>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
