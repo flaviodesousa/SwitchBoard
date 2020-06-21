@@ -33,17 +33,17 @@ namespace SourceProofReader
 
         private static string Checksum(string text)
         {
-            var checksum = 0;
+            var checksum = 0m;
             var chars = text.ToCharArray();
 
             for (var i = 0; i < chars.Length; ++i)
             {
                 checksum += (chars[i] * (i + 1));
-                checksum &= 0xff;
+                checksum = decimal.Remainder(checksum, 256);
             }
 
-            var c1 = (char) (65 + Math.Round(checksum / 16.0));
-            var c2 = (char) (65 + (checksum & 0xf));
+            var c1 = (char) (65 + decimal.Round(decimal.Divide(checksum, 16), MidpointRounding.AwayFromZero));
+            var c2 = (char) (65 + decimal.Remainder(checksum, 16));
             return $"{c1}{c2}";
         }
 
