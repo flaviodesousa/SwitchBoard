@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceProofReader", "Source
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B1A3E111-6199-4AB1-B669-37701189EDB5}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
 		OriginalSources\PROOFRDR.BAS = OriginalSources\PROOFRDR.BAS
 		Readme.md = Readme.md
 		ScreenshotOnDOSBox.png = ScreenshotOnDOSBox.png
